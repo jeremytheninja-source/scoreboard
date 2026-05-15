@@ -61,7 +61,7 @@ function isOffSeason(events) {
   return daysAway > 30
 }
 
-function GameCard({ game }) {
+function GameCard({ game, featuredTeam }) {
   const [revealed, setRevealed] = useState(false)
 
   const comp = game.competitions[0]
@@ -76,11 +76,28 @@ function GameCard({ game }) {
     timeZoneName: 'short'
   })
 
+  const top = featuredTeam === home.team.id ? home : away
+  const bottom = featuredTeam === home.team.id ? away : home
+
+  const topRank = top.curatedRank?.current
+  const bottomRank = bottom.curatedRank?.current
+  const isArkansas = top.team.displayName.toLowerCase().includes('arkansas')
+
   return (
-    <div className="game-card">
+    <div className={`game-card ${isArkansas ? 'arkansas-card' : ''}`}>
       <div className="card-left">
-        <div className="team-name">{away.team.displayName}</div>
-        <div className="team-name">{home.team.displayName}</div>
+        <div className="team-name">
+          {topRank && topRank <= 25 && (
+            <span className="rank">#{topRank} </span>
+          )}
+          {top.team.displayName}
+        </div>
+        <div className="team-name opponent">
+          {bottomRank && bottomRank <= 25 && (
+            <span className="rank">#{bottomRank} </span>
+          )}
+          {bottom.team.displayName}
+        </div>
         <div className="badge">
           {status.name === 'STATUS_SCHEDULED'
             ? gameTime
@@ -96,36 +113,115 @@ function GameCard({ game }) {
         ) : hasScore ? (
           <div className="score-revealed">
             <div className="score-line">
-              <span className="score-name">{away.team.abbreviation}</span>
-              <span className="score-num">{away.score}</span>
+              <span className="score-name">{top.team.abbreviation}</span>
+              <span className="score-num">{top.score}</span>
             </div>
             <div className="score-line">
-              <span className="score-name">{home.team.abbreviation}</span>
-              <span className="score-num">{home.score}</span>
+              <span className="score-name">{bottom.team.abbreviation}</span>
+              <span className="score-num">{bottom.score}</span>
             </div>
           </div>
         ) : (
-          <img
-            src={manningFace}
-            alt="No score yet"
-            className="manning"
-          />
+          <img src={manningFace} alt="No score yet" className="manning" />
         )}
       </div>
     </div>
   )
 }
 
+function HomeScreen({ onSelectLeague, onCollege }) {
+  return (
+    <div className="app">
+      <h1>Scoreboard</h1>
+      <p className="screen-label">PRO LEAGUES</p>
+      <div className="leagues">
+        {PRO_LEAGUES.map(league => (
+          <button key={league.id} onClick={() => onSelectLeague(league, false)}>
+            {league.label}
+          </button>
+        ))}
+      </div>
+      <div className="leagues college-entry">
+        <button className="college-btn" onClick={onCollege}>
+          COLLEGE 🎓
+        </button>
+      </div>
+    </div>
+  )
+}
+
+function CollegeScreen({ onSelectLeague, onBack }) {
+  return (
+    <div className="app">
+      <div className="nav-bar">
+        <button className="back-btn" onClick={onBack}>◀ Pro Leagues</button>
+        <h1>Scoreboard</h1>
+        <div className="nav-spacer" />
+      </div>
+      <p className="screen-label">COLLEGE SPORTS</p>
+      <div className="leagues">
+        {COLLEGE_LEAGUES.map(league => (
+          <button key={league.id} onClick={() => onSelectLeague(league, true)}>
+            {league.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function GamesScreen({ league, games, loading, snarkyMessage, isCollege, onBack, onAllGames }) {
+  const backLabel = isCollege ? '◀ College' : '◀ Pro Leagues'
+
+  return (
+    <div className="app">
+      <div className="nav-bar">
+        <button className="back-btn" onClick={onBack}>{backLabel}</button>
+        <h1>{league.label}</h1>
+        <div className="nav-spacer" />
+      </div>
+
+      {loading && <p className="status">Loading games...</p>}
+
+      {!loading && snarkyMessage && (
+        <p className="status snarky">{snarkyMessage}</p>
+      )}
+
+      {!loading && !snarkyMessage && games.length === 0 && (
+        <p className="status">No games today.</p>
+      )}
+
+      <div className="games">
+        {games.map((slot) => (
+          <GameCard
+            key={`${slot.game.id}-${slot.featuredTeam}`}
+            game={slot.game}
+            featuredTeam={slot.featuredTeam}
+          />
+        ))}
+      </div>
+
+      {!loading && !snarkyMessage && games.length > 0 && (
+        <button className="all-games-btn" onClick={onAllGames}>
+          All Games by Conference
+        </button>
+      )}
+    </div>
+  )
+}
+
 function App() {
+  const [screen, setScreen] = useState('home')
   const [selectedLeague, setSelectedLeague] = useState(null)
-  const [showCollege, setShowCollege] = useState(false)
+  const [isCollege, setIsCollege] = useState(false)
   const [games, setGames] = useState([])
   const [loading, setLoading] = useState(false)
   const [snarkyMessage, setSnarkyMessage] = useState(null)
 
-  async function fetchGames(league, isCollege = false) {
+  async function fetchGames(league, college) {
     setSelectedLeague(league)
-    setShowCollege(true)
+    setIsCollege(college)
+    setScreen('games')
     setLoading(true)
     setGames([])
     setSnarkyMessage(null)
@@ -136,18 +232,51 @@ function App() {
       const events = data.events || []
 
       if (isOffSeason(events)) {
-        setSnarkyMessage(getSnarky(isCollege))
+        setSnarkyMessage(getSnarky(college))
         setGames([])
-      } else {
-        const sorted = [...events].sort((a, b) => {
-        const aHasArk = JSON.stringify(a).toLowerCase().includes('arkansas')
-        const bHasArk = JSON.stringify(b).toLowerCase().includes('arkansas')
-        if (aHasArk && !bHasArk) return -1
-        if (!aHasArk && bHasArk) return 1
-        return 0
-      })
-      setGames(sorted)
+        return
       }
+
+      if (!college) {
+        // Pro leagues — just show all games in order
+        setGames(events.map(game => ({
+          game,
+          featuredTeam: game.competitions[0].competitors.find(c => c.homeAway === 'away').team.id
+        })))
+        return
+      }
+
+      // College — build ranked slots
+      const slots = []
+
+      events.forEach(game => {
+        const comp = game.competitions[0]
+        const home = comp.competitors.find(c => c.homeAway === 'home')
+        const away = comp.competitors.find(c => c.homeAway === 'away')
+
+        const homeRank = home.curatedRank?.current
+        const awayRank = away.curatedRank?.current
+        const homeIsArk = home.team.displayName.toLowerCase().includes('arkansas')
+        const awayIsArk = away.team.displayName.toLowerCase().includes('arkansas')
+
+        if (homeIsArk) {
+          slots.push({ game, featuredTeam: home.team.id, sortKey: 0 })
+        }
+        if (awayIsArk) {
+          slots.push({ game, featuredTeam: away.team.id, sortKey: 0 })
+        }
+
+        if (homeRank && homeRank <= 25 && !homeIsArk) {
+          slots.push({ game, featuredTeam: home.team.id, sortKey: homeRank })
+        }
+        if (awayRank && awayRank <= 25 && !awayIsArk) {
+          slots.push({ game, featuredTeam: away.team.id, sortKey: awayRank })
+        }
+      })
+
+      slots.sort((a, b) => a.sortKey - b.sortKey)
+      setGames(slots)
+
     } catch (err) {
       console.error('Failed to fetch games:', err)
     } finally {
@@ -155,66 +284,40 @@ function App() {
     }
   }
 
-  function handleCollegeClick() {
-    setShowCollege(prev => !prev)
-    setSelectedLeague(null)
+  function handleBack() {
+    setScreen(screen === 'games' ? (isCollege ? 'college' : 'home') : 'home')
     setGames([])
     setSnarkyMessage(null)
   }
 
+  if (screen === 'home') {
+    return (
+      <HomeScreen
+        onSelectLeague={fetchGames}
+        onCollege={() => setScreen('college')}
+      />
+    )
+  }
+
+  if (screen === 'college') {
+    return (
+      <CollegeScreen
+        onSelectLeague={fetchGames}
+        onBack={() => setScreen('home')}
+      />
+    )
+  }
+
   return (
-    <div className="app">
-      <h1>Scoreboard</h1>
-
-      <div className="leagues">
-        {PRO_LEAGUES.map(league => (
-          <button
-            key={league.id}
-            onClick={() => fetchGames(league, false)}
-            className={selectedLeague?.id === league.id ? 'active' : ''}
-          >
-            {league.label}
-          </button>
-        ))}
-
-        <button
-          onClick={handleCollegeClick}
-          className={showCollege ? 'active' : ''}
-        >
-          COLLEGE 🎓
-        </button>
-      </div>
-
-      {showCollege && (
-        <div className="college-leagues">
-          {COLLEGE_LEAGUES.map(league => (
-            <button
-              key={league.id}
-              onClick={() => fetchGames(league, true)}
-              className={selectedLeague?.id === league.id ? 'active' : ''}
-            >
-              {league.label}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {loading && <p className="status">Loading games...</p>}
-
-      {!loading && snarkyMessage && (
-        <p className="status snarky">{snarkyMessage}</p>
-      )}
-
-      {!loading && selectedLeague && games.length === 0 && !snarkyMessage && (
-        <p className="status">No games today.</p>
-      )}
-
-      <div className="games">
-        {games.map(game => (
-          <GameCard key={game.id} game={game} />
-        ))}
-      </div>
-    </div>
+    <GamesScreen
+      league={selectedLeague}
+      games={games}
+      loading={loading}
+      snarkyMessage={snarkyMessage}
+      isCollege={isCollege}
+      onBack={handleBack}
+      onAllGames={() => setScreen('allgames')}
+    />
   )
 }
 

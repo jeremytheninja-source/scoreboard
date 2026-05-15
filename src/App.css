@@ -15,45 +15,97 @@ body {
 
 h1 {
   font-size: 1.8rem;
-  margin-bottom: 20px;
   text-align: center;
+  flex: 1;
+}
+
+.nav-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.nav-spacer {
+  width: 60px;
+}
+
+.back-btn {
+  width: 60px;
+  background: none;
+  border: none;
+  color: #f0f0f0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+}
+
+.screen-label {
+  text-align: center;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: #555;
+  margin-bottom: 16px;
+  margin-top: 8px;
 }
 
 .leagues {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   flex-wrap: wrap;
-  margin-bottom: 24px;
   justify-content: center;
+  margin-bottom: 16px;
 }
 
 .leagues button {
-  padding: 10px 16px;
+  padding: 14px 20px;
   border-radius: 20px;
   border: 2px solid #333;
   background: #1a1a1a;
   color: #f0f0f0;
-  font-size: 0.95rem;
+  font-size: 1rem;
   cursor: pointer;
   transition: all 0.2s;
 }
 
-.leagues button.active,
 .leagues button:hover {
   border-color: #e8193c;
   background: #2a0a10;
+}
+
+.college-entry {
+  margin-top: 8px;
+}
+
+.college-btn {
+  padding: 14px 40px !important;
+  border-color: #555 !important;
+}
+
+.college-btn:hover {
+  border-color: #e8193c !important;
+  background: #2a0a10 !important;
 }
 
 .status {
   text-align: center;
   color: #888;
   margin: 40px 0;
+  font-size: 1rem;
+}
+
+.snarky {
+  font-style: italic;
+  color: #e8193c;
+  padding: 0 16px;
 }
 
 .games {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  margin-top: 8px;
 }
 
 .game-card {
@@ -74,9 +126,10 @@ h1 {
   flex: 1;
 }
 
-.vs {
-  color: #555;
-  font-weight: 400;
+.team-name {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.4;
 }
 
 .badge {
@@ -84,6 +137,7 @@ h1 {
   color: #888;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  margin-top: 2px;
 }
 
 .card-right {
@@ -115,65 +169,6 @@ h1 {
 
 .score-revealed {
   display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: #e8193c;
-}
-
-.score-dash {
-  color: #555;
-}
-
-.manning {
-  width: 90px;
-  height: 90px;
-  object-fit: cover;
-  border-radius: 10px;
-}
-.snarky {
-  font-style: italic;
-  color: #e8193c;
-  font-size: 1rem;
-  padding: 0 16px;
-}
-.college-leagues {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-bottom: 20px;
-  padding: 12px;
-  border: 1px solid #2a2a2a;
-  border-radius: 12px;
-  background: #111;
-}
-
-.college-leagues button {
-  padding: 8px 14px;
-  border-radius: 16px;
-  border: 2px solid #444;
-  background: #1a1a1a;
-  color: #f0f0f0;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.college-leagues button.active,
-.college-leagues button:hover {
-  border-color: #e8193c;
-  background: #2a0a10;
-}
-.team-name {
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.4;
-}
-
-.score-revealed {
-  display: flex;
   flex-direction: column;
   gap: 4px;
   width: 90px;
@@ -196,4 +191,11 @@ h1 {
   font-size: 1.3rem;
   font-weight: 800;
   color: #e8193c;
+}
+
+.manning {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 10px;
 }
