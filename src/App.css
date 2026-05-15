@@ -1,0 +1,148 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #0f0f0f;
+  color: #f0f0f0;
+  min-height: 100vh;
+}
+
+.app {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+h1 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.leagues {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  justify-content: center;
+}
+
+.leagues button {
+  padding: 10px 16px;
+  border-radius: 20px;
+  border: 2px solid #333;
+  background: #1a1a1a;
+  color: #f0f0f0;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.leagues button.active,
+.leagues button:hover {
+  border-color: #e8193c;
+  background: #2a0a10;
+}
+
+.status {
+  text-align: center;
+  color: #888;
+  margin: 40px 0;
+}
+
+.games {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.game-card {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.card-left {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.teams {
+  font-size: 1.2rem;
+  font-weight: 700;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.vs {
+  color: #555;
+  font-weight: 400;
+}
+
+.badge {
+  font-size: 0.72rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.card-right {
+  flex-shrink: 0;
+  width: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.score-btn {
+  width: 90px;
+  height: 56px;
+  border-radius: 10px;
+  border: 2px solid #e8193c;
+  background: #2a0a10;
+  color: #e8193c;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.score-btn:hover {
+  background: #e8193c;
+  color: #fff;
+}
+
+.score-revealed {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #e8193c;
+}
+
+.score-dash {
+  color: #555;
+}
+
+.manning {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.snarky {
+  font-style: italic;
+  color: #e8193c;
+  font-size: 1rem;
+  padding: 0 16px;
+}
