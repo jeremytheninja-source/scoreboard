@@ -22,15 +22,13 @@ h1 {
 .nav-bar {
   display: flex;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
-.nav-spacer {
-  width: 60px;
-}
+.nav-spacer { width: 80px; }
 
 .back-btn {
-  width: 60px;
+  width: 80px;
   background: none;
   border: none;
   color: #f0f0f0;
@@ -70,13 +68,11 @@ h1 {
 }
 
 .leagues button:hover {
-  border-color: #e8193c;
-  background: #2a0a10;
+  border-color: #9D2235;
+  background: #1a0508;
 }
 
-.college-entry {
-  margin-top: 8px;
-}
+.college-entry { margin-top: 8px; }
 
 .college-btn {
   padding: 14px 40px !important;
@@ -84,8 +80,30 @@ h1 {
 }
 
 .college-btn:hover {
-  border-color: #e8193c !important;
-  background: #2a0a10 !important;
+  border-color: #9D2235 !important;
+  background: #1a0508 !important;
+}
+
+.conf-nav-btn {
+  display: block;
+  width: 100%;
+  margin-bottom: 16px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 2px solid #333;
+  background: #1a1a1a;
+  color: #aaa;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.conf-nav-btn:hover {
+  border-color: #9D2235;
+  color: #f0f0f0;
 }
 
 .status {
@@ -97,7 +115,7 @@ h1 {
 
 .snarky {
   font-style: italic;
-  color: #e8193c;
+  color: #9D2235;
   padding: 0 16px;
 }
 
@@ -119,6 +137,11 @@ h1 {
   gap: 12px;
 }
 
+.arkansas-card {
+  border-color: #9D2235;
+  background: #1a0508;
+}
+
 .card-left {
   display: flex;
   flex-direction: column;
@@ -132,6 +155,17 @@ h1 {
   line-height: 1.4;
 }
 
+.team-name.opponent {
+  color: #aaa;
+  font-weight: 500;
+}
+
+.rank {
+  color: #9D2235;
+  font-weight: 800;
+  font-size: 0.85rem;
+}
+
 .badge {
   font-size: 0.72rem;
   color: #888;
@@ -139,6 +173,8 @@ h1 {
   letter-spacing: 0.05em;
   margin-top: 2px;
 }
+
+.badge.center { text-align: center; }
 
 .card-right {
   flex-shrink: 0;
@@ -152,9 +188,9 @@ h1 {
   width: 90px;
   height: 56px;
   border-radius: 10px;
-  border: 2px solid #e8193c;
-  background: #2a0a10;
-  color: #e8193c;
+  border: 2px solid #9D2235;
+  background: #1a0508;
+  color: #9D2235;
   font-size: 0.85rem;
   font-weight: 800;
   letter-spacing: 0.1em;
@@ -163,8 +199,14 @@ h1 {
 }
 
 .score-btn:hover {
-  background: #e8193c;
+  background: #9D2235;
   color: #fff;
+}
+
+.score-btn.small {
+  width: 70px;
+  height: 36px;
+  font-size: 0.72rem;
 }
 
 .score-revealed {
@@ -173,6 +215,8 @@ h1 {
   gap: 4px;
   width: 90px;
 }
+
+.score-revealed.small { width: 70px; }
 
 .score-line {
   display: flex;
@@ -190,7 +234,7 @@ h1 {
 .score-num {
   font-size: 1.3rem;
   font-weight: 800;
-  color: #e8193c;
+  color: #9D2235;
 }
 
 .manning {
@@ -198,4 +242,188 @@ h1 {
   height: 90px;
   object-fit: cover;
   border-radius: 10px;
+}
+
+.manning.small {
+  width: 60px;
+  height: 60px;
+}
+
+/* ─── CONFERENCE SCREEN ──────────────────────────────────────── */
+
+.toggle-bar {
+  display: flex;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid #333;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 10px;
+  background: #1a1a1a;
+  border: none;
+  color: #888;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  letter-spacing: 0.05em;
+}
+
+.toggle-btn.active {
+  background: #9D2235;
+  color: #fff;
+}
+
+.conf-group {
+  margin-bottom: 24px;
+}
+
+.conf-group-header {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: #9D2235;
+  text-transform: uppercase;
+  padding: 6px 0;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.conf-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 8px;
+  min-height: 56px;
+  border-bottom: 1px solid #1a1a1a;
+  gap: 8px;
+}
+
+.conf-row:last-child { border-bottom: none; }
+
+.arkansas-row {
+  background: #1a0508;
+  border-radius: 8px;
+  border-bottom: none !important;
+  margin-bottom: 2px;
+  padding: 10px 10px;
+}
+
+.conf-row-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.conf-standing-pos {
+  color: #555;
+  font-size: 0.85rem;
+  font-weight: 700;
+  min-width: 20px;
+  flex-shrink: 0;
+}
+
+.conf-team-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.conf-row-right {
+  flex-shrink: 0;
+  width: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.standings-stats {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-end;
+  width: 140px;
+}
+
+.stat-wl {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #f0f0f0;
+  min-width: 42px;
+  text-align: right;
+}
+
+.stat-pct {
+  font-size: 0.85rem;
+  color: #aaa;
+  min-width: 36px;
+  text-align: right;
+}
+
+.stat-gb {
+  font-size: 0.78rem;
+  color: #555;
+  min-width: 40px;
+  text-align: right;
+}
+
+.conf-score-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  width: 140px;
+}
+
+.conf-opponent-label {
+  font-size: 0.78rem;
+  color: #aaa;
+  font-weight: 500;
+}
+
+.no-game {
+  font-size: 0.75rem;
+  color: #444;
+  font-style: italic;
+  text-align: right;
+}
+/* ─── CONFERENCE LIST SCREEN ─────────────────────────────────── */
+
+.conf-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.conf-list-btn {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid #2a2a2a;
+  background: #1a1a1a;
+  color: #f0f0f0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.conf-list-btn:hover {
+  border-color: #9D2235;
+  background: #1a0508;
+}
+
+.conf-list-sec {
+  border-color: #9D2235;
+  background: #1a0508;
+  font-weight: 800;
 }
